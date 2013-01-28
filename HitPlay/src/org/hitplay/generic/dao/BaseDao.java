@@ -5,10 +5,13 @@ import org.hibernate.SessionFactory;
 
 public abstract class BaseDao<T> implements IDao<T> {
 	
+	
+	
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
+	//So That Spring Can Inject Our Hibernate's SessionFactory 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}

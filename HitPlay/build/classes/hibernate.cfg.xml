@@ -28,7 +28,7 @@
 		<property name="show_sql">true</property>
 
 		<!-- Drop and re-create The Database Schema on Start up -->
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<property name="cache.provider.class">org.hibernate.cache.NoCacheProvider</property>
 

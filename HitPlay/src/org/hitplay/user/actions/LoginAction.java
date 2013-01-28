@@ -1,15 +1,21 @@
 package org.hitplay.user.actions;
 
-import java.util.Map;
-
-import com.opensymphony.xwork2.ActionSupport;
-
 import org.apache.struts2.interceptor.SessionAware;
 import org.hitplay.services.AuthenticateLoginService;
-import org.hitplay.user.dto.User;
-import org.hitplay.constants.*;
-public class LoginAction extends ActionSupport implements SessionAware{
 
+import org.hitplay.user.dto.User;
+import org.hitplay.base.actions.UserAction;
+import org.hitplay.constants.*;
+public class LoginAction extends UserAction implements SessionAware{
+	
+	/* 
+	 * To Be Easily Noticeable.
+	 * Inherits The FF:
+	 * Map<String, Obj> session
+	 * ProfileService profileService;
+	 * UserProfile profileBean;
+	 */
+	
 	public String execute() {
 		return "success";
 	}
@@ -35,11 +41,6 @@ public class LoginAction extends ActionSupport implements SessionAware{
 		this.authenticateLoginService = authenticateLoginService;
 	}
 	
-	@Override
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
-	
 	public User getUserBean() {
 		return userBean;
 	}
@@ -52,7 +53,5 @@ public class LoginAction extends ActionSupport implements SessionAware{
 
 	private User userBean;
 	private AuthenticateLoginService authenticateLoginService;
-	private Map<String,Object> session; 
-	
 
 }
