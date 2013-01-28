@@ -1,7 +1,7 @@
 package org.hitplay.audio.utils;
 
 public enum CODEC {
-	LIBVORBIS("libvorbis"),LIBMP3LAME("libmp3lame");
+	LIBVORBIS("vorbis"),LIBMP3LAME("libmp3lame");
 	
 	private String val;
 	

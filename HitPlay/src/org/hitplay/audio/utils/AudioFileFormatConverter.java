@@ -15,7 +15,7 @@ public class AudioFileFormatConverter {
 	protected EncodingAttributes encoAttrs = new EncodingAttributes();
 	protected Encoder encoder = new Encoder();
 
-	protected static final Integer BITRATE = new Integer(256000);// Minimal
+	protected static final Integer BITRATE = new Integer(192000);// Minimal
 																	// bitrate
 																	// only
 	protected static final Integer CHANNELS = new Integer(2); // 2 for stereo, 1
