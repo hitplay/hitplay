@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Database connection settings -->
+
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hitplayproto</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">123192</property>
+
+		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<property name="c3p0.max_size">100</property>
+		<property name="c3p0.min_size">1</property>
+		<property name="c3p0.idle_test_period">30</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+
+		<!-- Shows Generated SQL Queries By Hibernate -->
+		<property name="show_sql">true</property>
+
+		<!-- Drop and re-create The Database Schema on Start up -->
+		<property name="hbm2ddl.auto">create</property>
+
+		<property name="cache.provider.class">org.hibernate.cache.NoCacheProvider</property>
+
+		<!-- Mapping Classes -->
+		
+		<!-- User Related Mappings -->
+		<mapping class="org.hitplay.user.dto.User" />
+		<mapping class="org.hitplay.user.dto.UserProfile" />
+		<mapping class="org.hitplay.user.dto.Picture"/>
+		
+		<!-- Administrative Mappings -->
+		<mapping class="org.hitplay.admin.dto.Administrator" />
+		
+		<!-- Audio Related Mappings -->
+		<mapping class="org.hitplay.audio.dto.Tag" />
+		<mapping class="org.hitplay.audio.dto.Genre" />
+		<mapping class="org.hitplay.audio.dto.Track" />
+		
+	</session-factory>
+
+</hibernate-configuration>
