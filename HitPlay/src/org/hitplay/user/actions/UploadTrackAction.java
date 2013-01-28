@@ -1,6 +1,9 @@
 package org.hitplay.user.actions;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +31,14 @@ public class UploadTrackAction extends UserAction implements ServletRequestAware
 		*/
 		String dirToStore = root + Paths.MEDIA + username + Paths.AUDIO;
 		
-		String fileNameMp3 = dirToStore + filename + ".mp3";
-		String fileNameOgg = dirToStore + filename + ".ogg";
+		//We will name the uploaded audio file on the date and time it was uploaded
+		//For Uniqueness of the user upload
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+		Calendar cal = Calendar.getInstance();
+		String audioFileName = dateFormat.format(cal.getTime());
+		
+		String fileNameMp3 = dirToStore + audioFileName + ".mp3";
+		String fileNameOgg = dirToStore + audioFileName + ".ogg";
 		
 		File audioOgg = new File(fileNameOgg);
 		File audioMp3 = new File(fileNameMp3);
