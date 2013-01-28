@@ -5,43 +5,43 @@
 	<constant name="struts.devMode" value="true" /> <!-- set to false for prod -->
 	<constant name="struts.ui.theme" value="simple" />
 	<constant name="struts.action.extension" value="," />
-	
+
 	<!-- NOTE: Use json-default for form validation packages -->
-	<package name="default" namespace ="" extends="json-default">	
+	<package name="default" namespace="" extends="json-default">
 		<default-action-ref name="home" />
-		
+
 		<!-- Initial Action Page (Action For Index/Welcome Page) -->
 		<action name="home" class="org.hitplay.base.actions.IndexAction"
 			method="execute">
 			<result name="success">/views/index.jsp</result>
 		</action>
-		
+
 		<!-- Test Action to see if Actions is Working -->
 		<action name="test" class="org.hitplay.base.actions.TestAction"
 			method="execute">
 			<result name="success">Test.jsp</result>
 		</action>
 
-		<!--  Different Action for Different REQUEST(Eg,Post and Get) -->
+		<!-- Different Action for Different REQUEST(Eg,Post and Get) -->
 		<action name="register">
 			<result name="success">/views/forms/register.jsp</result>
 		</action>
-		
+
 		<action name="doRegister" class="org.hitplay.user.actions.RegisterAction"
 			method="execute">
 			<!-- Change this later to a Success registration Page -->
 			<interceptor-ref name="jsonValidationWorkflowStack" />
 			<result name="success">/views/forms/register.jsp</result>
 			<result name="input">/views/forms/register.jsp</result>
-			<result name="registration-success" type = "redirect">home</result>
+			<result name="registration-success" type="redirect">home</result>
 		</action>
-		
+
 		<!-- For Get Request Just Forward Request To The Page -->
 		<action name="login">
 			<result name="success">/views/forms/login.jsp</result>
 		</action>
-			
-		<!--  POST request will have a corresponding action  -->	
+
+		<!-- POST request will have a corresponding action -->
 		<action name="doLogin" class="org.hitplay.user.actions.LoginAction"
 			method="execute">
 			<!-- Change this later to a Login registration Page -->
@@ -49,128 +49,138 @@
 			<result name="success">/views/user/welcome.jsp</result>
 			<result name="input">/views/forms/login.jsp</result>
 		</action>
-		
-	   <action name="doLogout" class="org.hitplay.user.actions.LogoutAction"
+
+		<action name="doLogout" class="org.hitplay.user.actions.LogoutAction"
 			method="execute">
 			<!-- Change this later to a Login registration Page -->
 			<interceptor-ref name="jsonValidationWorkflowStack" />
-			<result name="success" type = "redirect">/home</result>
+			<result name="success" type="redirect">/home</result>
 		</action>
-		
-		<action name="profile" class = "org.hitplay.user.actions.ViewProfileAction">
-			<interceptor-ref name = "validation" />
-			<interceptor-ref name = "basicStack" />
+
+		<action name="profile" class="org.hitplay.user.actions.ViewProfileAction">
+			<interceptor-ref name="validation" />
+			<interceptor-ref name="basicStack" />
 			<result name="success">/views/user/profile.jsp</result>
 			<result name="profile-not-found">/views/error_pages/page-not-found.jsp</result>
 		</action>
-		
-		
-		<action name="editProfile"  class = "org.hitplay.user.actions.EditProfileAction" method = "populateProfile">
+
+
+		<action name="editProfile" class="org.hitplay.user.actions.EditProfileAction"
+			method="populateProfile">
 			<result name="success">/views/user/edit-profile.jsp</result>
 			<result name="input">/views/error_pages/page-not-found.jsp</result>
 		</action>
-		
-		<action name="doEditProfile" class = "org.hitplay.user.actions.EditProfileAction">
-			<interceptor-ref name = "validation" />
-			<interceptor-ref name = "basicStack" />
+
+		<action name="doEditProfile" class="org.hitplay.user.actions.EditProfileAction">
+			<interceptor-ref name="validation" />
+			<interceptor-ref name="basicStack" />
 			<result name="success">/views/user/welcome.jsp</result>
 			<result name="input">/views/error_pages/page-not-found.jsp</result>
 		</action>
 
-	<action name="uploadPicture">
-		<result name="success">/views/user/uploadPicture.jsp</result>
-	</action>
-	
-	<action name="doUploadPicture" class="org.hitplay.user.actions.UploadPictureAction">
-		<interceptor-ref name="fileUpload">
-			<param name="maximumSize">2097152</param>
-			<param name="allowedTypes">image/png,image/gif,image/jpeg,image/pjpeg</param>
-		</interceptor-ref>
-		<interceptor-ref name="defaultStack" />
-		<result name="success">/views/user/welcome.jsp</result>
-		<result name="input">/views/user/uploadPicture.jsp</result>
-	</action>
-		
-	<action name="searchProfile">
-		<result name="success">/views/user/search-profile.jsp</result>
-	</action>
-	
-		<action name="doSearchProfile" class = "org.hitplay.user.actions.SearchProfileAction" method = "execute" >
-		<result name="success">/views/user/search-profile.jsp</result>
-	</action>
-		
-	</package>
-	
-	<!--  Administrator Action Mappings -->
-	<package name="administration" namespace="/admin" extends="json-default">
-	<interceptors>
-		<interceptor name="adminAuthorization"
-			class="org.hitplay.custom.interceptors.AdminAuthorization" />
-		<interceptor-stack name="admin-stack">
-			<interceptor-ref name="adminAuthorization" />
+		<action name="uploadPicture">
+			<result name="success">/views/user/uploadPicture.jsp</result>
+		</action>
+
+		<action name="doUploadPicture" class="org.hitplay.user.actions.UploadPictureAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedTypes">image/png,image/gif,image/jpeg,image/pjpeg</param>
+			</interceptor-ref>
 			<interceptor-ref name="defaultStack" />
-		</interceptor-stack>
-	</interceptors>
-
-	<default-action-ref name="home" />
-
-	<action name="home" class="org.hitplay.base.actions.IndexAction"
-		method="execute">
-		<interceptor-ref name="admin-stack" />
-		<result name="success">/views/admin/login.jsp</result>
-		<result name="logged-in">/views/admin/controlpanel.jsp</result>
-	</action>
-
-	<action name="doLogin" class="org.hitplay.admin.actions.AdminLoginAction"
-		method="execute">
-		<!-- Change this later to a Login registration Page -->
-		<interceptor-ref name="jsonValidationWorkflowStack" />
-		<result name="success" type = "redirect">/admin/</result>
-		<result name="input">/views/admin/login.jsp</result>
-	</action>
-	
-	
-	<action name="newGenre">
-		<result name="success">/views/admin/add-genre.jsp</result>
-	</action>
-	
-	<action name="newTag">
-		<result name="success">/views/admin/add-tag.jsp</result>
-	</action>
-	
-	<action name="addGenre" class="org.hitplay.admin.actions.AddGenreAction"
-		method="execute">
-		<!-- Change this later to a Login registration Page -->
-		<interceptor-ref name="jsonValidationWorkflowStack" />
-				<result name="success" type = "redirect">/admin/</result>
-		<result name="input">/views/admin/add-genre.jsp</result>
-	</action>
-	
-	
-	<action name="addTag" class="org.hitplay.admin.actions.AddTagAction"
-		method="execute">
-		<!-- Change this later to a Login registration Page -->
-		<interceptor-ref name="jsonValidationWorkflowStack" />
-		<!-- For now, just redirect them to admin panel page -->
-		<result name="success" type = "redirect">/admin/</result>
-		<result name="input">/views/admin/add-tag.jsp</result>
-	</action>	
+			<result name="success">/views/user/welcome.jsp</result>
+			<result name="input">/views/user/uploadPicture.jsp</result>
+		</action>
+		
+		<action name="uploadTrack">
+			<result name="success">/views/user/upload-audio.jsp</result>
+		</action>
+		
 	
 		<action name="searchProfile">
-		<result name="success">/views/user/search-profile.jsp</result>
-	</action>
-	
-		<action name="doSearchProfile" class = "org.hitplay.user.actions.SearchProfileAction" method = "execute" >
-		<result name="success">/views/user/search-profile.jsp</result>
-	</action>
-	
-		<action name="profile" class = "org.hitplay.user.actions.ViewProfileAction">
-			<interceptor-ref name = "validation" />
-			<interceptor-ref name = "basicStack" />
+			<result name="success">/views/user/search-profile.jsp</result>
+		</action>
+
+		<action name="doSearchProfile" class="org.hitplay.user.actions.SearchProfileAction"
+			method="execute">
+			<result name="success">/views/user/search-profile.jsp</result>
+		</action>
+		
+		
+		
+	</package>
+
+	<!-- Administrator Action Mappings -->
+	<package name="administration" namespace="/admin" extends="json-default">
+		<interceptors>
+			<interceptor name="adminAuthorization"
+				class="org.hitplay.custom.interceptors.AdminAuthorization" />
+			<interceptor-stack name="admin-stack">
+				<interceptor-ref name="adminAuthorization" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-action-ref name="home" />
+
+		<action name="home" class="org.hitplay.base.actions.IndexAction"
+			method="execute">
+			<interceptor-ref name="admin-stack" />
+			<result name="success">/views/admin/login.jsp</result>
+			<result name="logged-in">/views/admin/controlpanel.jsp</result>
+		</action>
+
+		<action name="doLogin" class="org.hitplay.admin.actions.AdminLoginAction"
+			method="execute">
+			<!-- Change this later to a Login registration Page -->
+			<interceptor-ref name="jsonValidationWorkflowStack" />
+			<result name="success" type="redirect">/admin/</result>
+			<result name="input">/views/admin/login.jsp</result>
+		</action>
+
+
+		<action name="newGenre">
+			<result name="success">/views/admin/add-genre.jsp</result>
+		</action>
+
+		<action name="newTag">
+			<result name="success">/views/admin/add-tag.jsp</result>
+		</action>
+
+		<action name="addGenre" class="org.hitplay.admin.actions.AddGenreAction"
+			method="execute">
+			<!-- Change this later to a Login registration Page -->
+			<interceptor-ref name="jsonValidationWorkflowStack" />
+			<result name="success" type="redirect">/admin/</result>
+			<result name="input">/views/admin/add-genre.jsp</result>
+		</action>
+
+
+		<action name="addTag" class="org.hitplay.admin.actions.AddTagAction"
+			method="execute">
+			<!-- Change this later to a Login registration Page -->
+			<interceptor-ref name="jsonValidationWorkflowStack" />
+			<!-- For now, just redirect them to admin panel page -->
+			<result name="success" type="redirect">/admin/</result>
+			<result name="input">/views/admin/add-tag.jsp</result>
+		</action>
+
+		<action name="searchProfile">
+			<result name="success">/views/user/search-profile.jsp</result>
+		</action>
+
+		<action name="doSearchProfile" class="org.hitplay.user.actions.SearchProfileAction"
+			method="execute">
+			<result name="success">/views/user/search-profile.jsp</result>
+		</action>
+
+		<action name="profile" class="org.hitplay.user.actions.ViewProfileAction">
+			<interceptor-ref name="validation" />
+			<interceptor-ref name="basicStack" />
 			<result name="success">/views/user/profile.jsp</result>
 			<result name="profile-not-found">/views/error_pages/page-not-found.jsp</result>
 		</action>
-	
-</package>
+
+	</package>
 
 </struts>

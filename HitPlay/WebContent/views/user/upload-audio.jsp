@@ -9,8 +9,13 @@
 </head>
 <body>
 
-	<s:form action="doUploadAudio" namespace="/" method="POST" enctype="multipart/form-data">
+	<s:form action="doUploadAudio" namespace="/" method="POST"
+		enctype="multipart/form-data">
 
+		<s:textfield name="title" />
+		<s:file name="audioUpload" id="fileup" value="kyel" label="File" />
+		<s:fielderror />
+		<s:submit id="upload-file" />
 
 	</s:form>
 

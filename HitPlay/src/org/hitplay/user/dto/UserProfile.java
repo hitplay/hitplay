@@ -17,7 +17,7 @@ import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.JoinColumn;
-import org.hitplay.audio.dto.Track;
+import org.hitplay.audio.dto.Audio;
 
 @Entity
 @Table(name ="USER_PROFILES")
@@ -80,11 +80,11 @@ public class UserProfile implements Serializable {
 		this.picture = picture;
 	}
 
-	public List<Track> getTrackUploads() {
+	public List<Audio> getTrackUploads() {
 		return trackUploads;
 	}
 
-	public void setTrackUploads(List<Track> trackUploads) {
+	public void setTrackUploads(List<Audio> trackUploads) {
 		this.trackUploads = trackUploads;
 	}
 
@@ -117,7 +117,7 @@ public class UserProfile implements Serializable {
 
 	@OneToMany
 	@JoinColumn(name = "UPLOADER_ID")
-	private List<Track> trackUploads;
+	private List<Audio> trackUploads;
 	
 	//Future implementations Sprint 2
 	
