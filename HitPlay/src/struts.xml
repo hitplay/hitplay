@@ -5,6 +5,7 @@
 	<constant name="struts.devMode" value="true" /> <!-- set to false for prod -->
 	<constant name="struts.ui.theme" value="simple" />
 	<constant name="struts.action.extension" value="," />
+	<constant name="struts.multipart.maxSize" value="31457280" />
 
 	<!-- NOTE: Use json-default for form validation packages -->
 	<package name="default" namespace="" extends="json-default">
@@ -91,12 +92,28 @@
 			<result name="success">/views/user/welcome.jsp</result>
 			<result name="input">/views/user/uploadPicture.jsp</result>
 		</action>
-		
+
 		<action name="uploadTrack">
 			<result name="success">/views/user/upload-audio.jsp</result>
 		</action>
-		
-	
+
+		<action name="doUploadAudio" class="org.hitplay.user.actions.UploadTrackAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">31457280</param>
+				<param name="allowedTypes">audio/mp3
+					,audio/x-wav,audio/mpeg,audio/ogg,audio/wav</param>
+			</interceptor-ref>
+			<interceptor-ref name="params">
+				<param name="excludeParams">dojo\..*,^struts\..*</param>
+			</interceptor-ref>
+			<interceptor-ref name="jsonValidationWorkflowStack" />
+			<interceptor-ref name="validation" />
+			<interceptor-ref name="workflow" />
+
+			<result name="success">/views/user/welcome.jsp</result>
+		</action>
+
+
 		<action name="searchProfile">
 			<result name="success">/views/user/search-profile.jsp</result>
 		</action>
@@ -105,9 +122,9 @@
 			method="execute">
 			<result name="success">/views/user/search-profile.jsp</result>
 		</action>
-		
-		
-		
+
+
+
 	</package>
 
 	<!-- Administrator Action Mappings -->

@@ -45,7 +45,7 @@
 		<!-- Audio Related Mappings -->
 		<mapping class="org.hitplay.audio.dto.Tag" />
 		<mapping class="org.hitplay.audio.dto.Genre" />
-		<mapping class="org.hitplay.audio.dto.Track" />
+		<mapping class="org.hitplay.audio.dto.Audio" />
 		
 	</session-factory>
 

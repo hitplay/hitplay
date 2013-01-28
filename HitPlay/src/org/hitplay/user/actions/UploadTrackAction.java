@@ -3,7 +3,9 @@ package org.hitplay.user.actions;
 import java.io.File;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.hitplay.audio.utils.AudioFileFormatConverter;
 import org.hitplay.audio.utils.CODEC;
@@ -12,13 +14,13 @@ import org.hitplay.base.actions.UserAction;
 import org.hitplay.constants.Handles;
 import org.hitplay.constants.Paths;
 
-public class UploadTrackAction extends UserAction implements ServletContextAware{
+public class UploadTrackAction extends UserAction implements ServletRequestAware{
 	
 	public String execute(){
 		
 		AudioFileFormatConverter aff = new AudioFileFormatConverter(file);
 		String username = (String)session.get(Handles.USERNAME_HANDLE);
-		String root = this.context.getContextPath();
+		String root = request.getServletContext().getRealPath("/");
 		
 		/*  
 		 * The File will be stored in the location:
@@ -29,11 +31,11 @@ public class UploadTrackAction extends UserAction implements ServletContextAware
 		String fileNameMp3 = dirToStore + filename + ".mp3";
 		String fileNameOgg = dirToStore + filename + ".ogg";
 		
-		File audioOgg = new File(dirToStore, fileNameOgg);
-		File audioMp3 = new File(dirToStore, fileNameMp3);
+		File audioOgg = new File(fileNameOgg);
+		File audioMp3 = new File(fileNameMp3);
 		
-		aff.convert(audioMp3, FORMAT.MP3,CODEC.LIBMP3LAME);
-		aff.convert(audioOgg, FORMAT.OGG,CODEC.LIBVORBIS);
+		System.out.println(aff.convert(audioMp3, FORMAT.MP3,CODEC.LIBMP3LAME));
+		System.out.println(aff.convert(audioOgg, FORMAT.OGG,CODEC.LIBVORBIS));
 		
 		//TODO
 		//Some Service Layers
@@ -50,15 +52,7 @@ public class UploadTrackAction extends UserAction implements ServletContextAware
 	public void setFile(File file) {
 		this.file = file;
 	}
-	
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
+		
 	public String getFilename() {
 		return filename;
 	}
@@ -74,22 +68,7 @@ public class UploadTrackAction extends UserAction implements ServletContextAware
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public ServletContext getContext() {
-		return context;
-	}
-	
-	public void setContext(ServletContext context) {
-		this.context = context;
-	}
-	
-	@Override
-	public void setServletContext(ServletContext arg0) {
-		context = arg0;
-	}
-	
-	
-	
+		
 	public String getArtist() {
 		return artist;
 	}
@@ -98,13 +77,19 @@ public class UploadTrackAction extends UserAction implements ServletContextAware
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
-
+	
+	@Override
+	public void setServletRequest(HttpServletRequest arg0) {
+		// TODO Auto-generated method stub
+		request = arg0;
+	}
+	
 	private File file;
-	private String contentType;
 	private String filename;
 	private String title;
 	private String artist;
-	private ServletContext context;
+	private HttpServletRequest request;
+
 
 	
 }

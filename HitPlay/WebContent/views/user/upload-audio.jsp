@@ -13,7 +13,8 @@
 		enctype="multipart/form-data">
 
 		<s:textfield name="title" />
-		<s:file name="audioUpload" id="fileup" value="kyel" label="File" />
+		<s:textfield name="filename" />
+		<s:file name="file" id="fileup" value="kyel" label="File" />
 		<s:fielderror />
 		<s:submit id="upload-file" />
 
