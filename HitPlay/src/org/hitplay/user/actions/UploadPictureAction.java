@@ -31,6 +31,8 @@ public class UploadPictureAction extends ActionSupport implements SessionAware,
 			String filePath = servletRequest.getServletContext().getRealPath("/")
 					+ Paths.MEDIA + username + Paths.PHOTO;
 			
+			System.out.println("IMAGE FILE PATH"+filePath);
+			
 			File fileToCreate = new File(filePath, userImageFileName);
 			FileUtils.copyFile(userImage, fileToCreate);
 

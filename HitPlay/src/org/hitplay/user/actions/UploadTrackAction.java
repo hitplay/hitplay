@@ -1,6 +1,7 @@
 package org.hitplay.user.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import org.hitplay.audio.utils.FORMAT;
 import org.hitplay.base.actions.UserAction;
 import org.hitplay.constants.Handles;
 import org.hitplay.constants.Paths;
+import org.hitplay.services.UploadPictureService;
 
 public class UploadTrackAction extends UserAction implements ServletRequestAware{
 	
@@ -37,14 +39,21 @@ public class UploadTrackAction extends UserAction implements ServletRequestAware
 		Calendar cal = Calendar.getInstance();
 		String audioFileName = dateFormat.format(cal.getTime());
 		
+		//Place to Store the files in the Server
 		String fileNameMp3 = dirToStore + audioFileName + ".mp3";
 		String fileNameOgg = dirToStore + audioFileName + ".ogg";
 		
+		//Creates the audiofiles
 		File audioOgg = new File(fileNameOgg);
 		File audioMp3 = new File(fileNameMp3);
 		
-		System.out.println(aff.convert(audioMp3, FORMAT.MP3,CODEC.LIBMP3LAME));
-		System.out.println(aff.convert(audioOgg, FORMAT.OGG,CODEC.LIBVORBIS));
+		//Converts The File To an Audio  Mp3 and OGG extension
+		aff.convert(audioMp3, FORMAT.MP3,CODEC.LIBMP3LAME);
+		aff.convert(audioOgg, FORMAT.OGG,CODEC.LIBVORBIS);
+	
+		//Store the The Relative Paths in the DB.
+		String relMp3Path = request.getServletContext().getContextPath()+Paths.MEDIA+username+Paths.AUDIO+ audioFileName+".mp3";
+		String relOggPath = request.getServletContext().getContextPath()+Paths.MEDIA+username+Paths.AUDIO+ audioFileName+".ogg";
 		
 		//TODO
 		//Some Service Layers
@@ -82,14 +91,20 @@ public class UploadTrackAction extends UserAction implements ServletRequestAware
 		return artist;
 	}
 
-
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
 	
+	public UploadPictureService getUploadPictureService() {
+		return uploadPictureService;
+	}
+
+	public void setUploadPictureService(UploadPictureService uploadPictureService) {
+		this.uploadPictureService = uploadPictureService;
+	}
+
 	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
 		request = arg0;
 	}
 	
@@ -97,8 +112,7 @@ public class UploadTrackAction extends UserAction implements ServletRequestAware
 	private String filename;
 	private String title;
 	private String artist;
+	private UploadPictureService uploadPictureService;
 	private HttpServletRequest request;
-
-
 	
 }
