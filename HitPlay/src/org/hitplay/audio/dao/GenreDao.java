@@ -1,5 +1,7 @@
 package org.hitplay.audio.dao;
 
+import java.util.List;
+
 import org.hitplay.generic.dao.BaseDao;
 import org.hitplay.audio.dto.Genre;
 
@@ -26,5 +28,9 @@ public class GenreDao extends BaseDao<Genre>{
 	public void delete(Genre type) {
 		sess().delete(type);
 	}
-
+	
+	public List<Genre> getAllGenres()
+	{
+		return (List<Genre>)sess().createQuery("from Genre").list();
+	}
 }

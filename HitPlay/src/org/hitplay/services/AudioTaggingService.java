@@ -1,5 +1,7 @@
 package org.hitplay.services;
 
+import java.util.List;
+
 import org.hitplay.audio.dao.GenreDao;
 import org.hitplay.audio.dao.TagDao;
 import org.hitplay.audio.dto.Genre;
@@ -17,6 +19,14 @@ public class AudioTaggingService {
 	
 	public void addGenreDefinition(Genre genre){
 		genreDao.save(genre);
+	}
+	
+	public List<Genre> getAllGenres(){
+		return genreDao.getAllGenres();
+	}
+	
+	public Genre getGenre(Long id){
+		return genreDao.getById(id);
 	}
 	
 	public TagDao getTagDao() {

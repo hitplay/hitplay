@@ -21,63 +21,80 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<tx:annotation-driven />
 
 	<!-- Create DAO Objects -->
-	<bean id = "userDao" class = "org.hitplay.users.dao.UserDao" scope = "singleton">
-		<property name ="sessionFactory" ref = "sessionFactory" />
+	<bean id="userDao" class="org.hitplay.users.dao.UserDao" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id = "userProfileDao" class = "org.hitplay.users.dao.UserProfileDao" scope = "singleton">
-		<property name ="sessionFactory" ref = "sessionFactory" />
-	</bean>
-	
-	<bean id = "adminDao" class = "org.hitplay.admin.dao.AdminDao" scope = "singleton">
-		<property name ="sessionFactory" ref = "sessionFactory" />
-	</bean>
-	
-	<bean id = "genreDao" class = " org.hitplay.audio.dao.GenreDao" scope = "singleton">
-		<property name ="sessionFactory" ref = "sessionFactory" />
-	</bean>
-	
-	<bean id = "tagDao" class = "org.hitplay.audio.dao.TagDao" scope = "singleton">
-		<property name ="sessionFactory" ref = "sessionFactory" />
-	</bean>
-	
-	<bean id="pictureDao" class="org.hitplay.users.dao.PictureDao"
-	scope="singleton">
-	<property name="sessionFactory" ref="sessionFactory" />
-</bean>
-	
-	<!--  Inject DAOs to Service Layers -->
-	<!--  Autowired by name (Struts2-plugin default) -->
-	<!--  Spring will search for the name/id of the bean , if it finds it it will inject the bean into an action that has that property  -->
 
-	<!--  Injects User Dao inside AuthenticateLoginService -->
-	<bean id="authenticateLoginService" class="org.hitplay.services.AuthenticateLoginService" scope="singleton">
+	<bean id="userProfileDao" class="org.hitplay.users.dao.UserProfileDao"
+		scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="adminDao" class="org.hitplay.admin.dao.AdminDao" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="genreDao" class=" org.hitplay.audio.dao.GenreDao" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="tagDao" class="org.hitplay.audio.dao.TagDao" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="audioDao" class="org.hitplay.audio.dao.AudioDao" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="pictureDao" class="org.hitplay.users.dao.PictureDao"
+		scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Inject DAOs to Service Layers -->
+	<!-- Autowired by name (Struts2-plugin default) -->
+	<!-- Spring will search for the name/id of the bean , if it finds it it 
+		will inject the bean into an action that has that property -->
+
+	<!-- Injects User Dao inside AuthenticateLoginService -->
+	<bean id="authenticateLoginService" class="org.hitplay.services.AuthenticateLoginService"
+		scope="singleton">
 		<property name="userDao" ref="userDao" />
 		<property name="adminDao" ref="adminDao" />
 	</bean>
-	
-	<bean id="registerService" class="org.hitplay.services.RegisterUserService" scope="singleton">
+
+	<bean id="registerService" class="org.hitplay.services.RegisterUserService"
+		scope="singleton">
 		<property name="userDao" ref="userDao" />
 		<property name="userProfileDao" ref="userProfileDao" />
 	</bean>
-	
-	<bean id="profileService" class="org.hitplay.services.ProfileService" scope="singleton">
+
+	<bean id="profileService" class="org.hitplay.services.ProfileService"
+		scope="singleton">
 		<property name="userProfileDao" ref="userProfileDao" />
 	</bean>
-	
-	<bean id="audioTaggingService" class="org.hitplay.services.AudioTaggingService" scope="singleton">
+
+	<bean id="audioTaggingService" class="org.hitplay.services.AudioTaggingService"
+		scope="singleton">
 		<property name="tagDao" ref="tagDao" />
 		<property name="genreDao" ref="genreDao" />
 	</bean>
-	
+
 	<bean id="uploadPictureService" class="org.hitplay.services.UploadPictureService"
-	scope="singleton">
-	<property name="pictureDao" ref="pictureDao" />
-	<property name="userProfileDao" ref="userProfileDao" />
-</bean>
-	
+		scope="singleton">
+		<property name="pictureDao" ref="pictureDao" />
+		<property name="userProfileDao" ref="userProfileDao" />
+	</bean>
+
+	<bean id="audioService" class="org.hitplay.services.AudioServices"
+		scope="singleton">
+		<property name="pictureDao" ref="pictureDao" />
+		<property name="userProfileDao" ref="userProfileDao" />
+		<property name="audioDao" ref="audioDao" />
+	</bean>
+
 </beans>

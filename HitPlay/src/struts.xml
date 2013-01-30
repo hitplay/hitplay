@@ -93,7 +93,7 @@
 			<result name="input">/views/user/uploadPicture.jsp</result>
 		</action>
 
-		<action name="uploadTrack">
+		<action name="uploadTrack" class="org.hitplay.user.actions.UploadTrackAction" method = "populateBeans">
 			<result name="success">/views/user/upload-audio.jsp</result>
 		</action>
 

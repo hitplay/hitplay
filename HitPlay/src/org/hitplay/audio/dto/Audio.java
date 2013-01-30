@@ -6,30 +6,30 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hitplay.user.dto.Picture;
 
 @Entity
 @Table(name = "TRACKS")
 public class Audio implements Serializable {
 
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8457074512118262362L;
 
-	public Audio(){
-		this.mp3Path = "";
-		this.oggPath = "";
-		this.artist = "";
-		this.title = "";
+	public Audio() {
+		this.upVotes = new Long(0);
 	}
-	
-	public int getTrackId() {
+
+	public Long getTrackId() {
 		return trackId;
 	}
 
-	public void setTrackId(int trackId) {
+	public void setTrackId(Long trackId) {
 		this.trackId = trackId;
 	}
 
@@ -48,7 +48,6 @@ public class Audio implements Serializable {
 	public void setMp3Path(String mp3Path) {
 		this.mp3Path = mp3Path;
 	}
-
 
 	public String getArtist() {
 		return artist;
@@ -73,7 +72,7 @@ public class Audio implements Serializable {
 	public void setDateUploaded(Date dateUploaded) {
 		this.dateUploaded = dateUploaded;
 	}
-	
+
 	public Long getUpVotes() {
 		return upVotes;
 	}
@@ -82,38 +81,57 @@ public class Audio implements Serializable {
 		this.upVotes = upVotes;
 	}
 
+	public Picture getCoverArt() {
+		return coverArt;
+	}
 
+	public void setCoverArt(Picture coverArt) {
+		this.coverArt = coverArt;
+	}
+	
+	public Genre getGenre() {
+		return genre;
+	}
 
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
 
 	@Id
 	@GeneratedValue
 	@Column(name = "TRACK_ID")
-	private int trackId;
-	
+	private Long trackId;
+
 	@Column(name = "OGG_PATH", nullable = false)
 	private String oggPath;
-	
+
 	@Column(name = "MP3_PATH", nullable = false)
 	private String mp3Path;
-	
-	@Column(name = "ARTIST", nullable = false, length=20)
+
+	@Column(name = "ARTIST")
 	private String artist;
-	
-	@Column(name = "TITLE", nullable = false, length=20)
+
+	@Column(name = "TITLE")
 	private String title;
-	
-	@Column(name = "DATE_UPLOADED", nullable = false)
+
+	@Column(name = "DATE_UPLOADED")
 	private Date dateUploaded;
-	
-	@Column(name = "TRACK_UPVOTES", nullable = false)
+
+	@Column(name = "TRACK_UPVOTES")
 	private Long upVotes;
-	
-	//TODO
-	//private Genre genre;
-	
-	//TODO
-	//private Set<Tags> tags;
-	
-	//TODO
-	//private List<Comment> comments;
+
+	@OneToOne
+	@JoinColumn(name = "AUDIO_ART_FK")
+	private Picture coverArt;
+
+	// TODO
+	@OneToOne
+	@JoinColumn(name = "GENRE_FK")
+	private Genre genre;
+
+	// TODO
+	// private Set<Tags> tags;
+
+	// TODO
+	// private List<Comment> comments;
 }

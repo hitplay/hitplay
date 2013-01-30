@@ -88,6 +88,10 @@ public class UserProfile implements Serializable {
 		this.trackUploads = trackUploads;
 	}
 
+	public void addAudioUpload(Audio audio){
+		trackUploads.add(audio);
+	}
+	
 	private static final long serialVersionUID = 2835493132236828090L;	
 	
 	@Id
