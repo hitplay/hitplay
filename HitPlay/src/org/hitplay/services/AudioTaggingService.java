@@ -42,6 +42,20 @@ public class AudioTaggingService {
 		this.genreDao = genreDao;
 	}
 	
+	public List<Tag> findTagsByName(String tagName){
+		return tagDao.getTagsByName(tagName);
+	}
+	
+	public Tag getTagByName(String name){
+		return tagDao.getTagByName(name);
+	}
+	
+	//Checks if the Tag Exist, null  is  does not exist.
+	public boolean tagExist(String name){
+		Tag tg = getTagByName(name);
+		return (tg != null) ? true : false;
+	}
+	
 	private TagDao tagDao;
 	private GenreDao genreDao;
 }

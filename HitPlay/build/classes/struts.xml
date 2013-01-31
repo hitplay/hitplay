@@ -8,7 +8,7 @@
 	<constant name="struts.multipart.maxSize" value="31457280" />
 
 	<!-- NOTE: Use json-default for form validation packages -->
-	<package name="default" namespace="" extends="json-default">
+	<package name="default" namespace="/" extends="json-default">
 		<default-action-ref name="home" />
 
 		<!-- Initial Action Page (Action For Index/Welcome Page) -->
@@ -93,8 +93,12 @@
 			<result name="input">/views/user/uploadPicture.jsp</result>
 		</action>
 
-		<action name="uploadTrack" class="org.hitplay.user.actions.UploadTrackAction" method = "populateBeans">
+		<action name="uploadTrack" class="org.hitplay.user.actions.UploadTrackAction"
+			method="populateBeans">
+						<interceptor-ref name="validation" />
+			<interceptor-ref name="workflow" />
 			<result name="success">/views/user/upload-audio.jsp</result>
+			<result name="input">/views/user/upload-audio.jsp</result>
 		</action>
 
 		<action name="doUploadAudio" class="org.hitplay.user.actions.UploadTrackAction">
@@ -111,6 +115,7 @@
 			<interceptor-ref name="workflow" />
 
 			<result name="success">/views/user/welcome.jsp</result>
+				<result name="input">/views/user/upload-audio.jsp</result>
 		</action>
 
 
@@ -123,6 +128,16 @@
 			<result name="success">/views/user/search-profile.jsp</result>
 		</action>
 
+		<!-- Get AJAX Related Actions -->
+		<action name="tags" class="org.hitplay.user.actions.GetTagsAction">
+			<result type="json">
+				<param name="excludeProperties">
+					q,
+					audioTaggingService.*\.sin
+				</param>
+			</result>
+
+		</action>
 
 
 	</package>

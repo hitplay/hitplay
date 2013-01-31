@@ -1,5 +1,7 @@
 package org.hitplay.audio.dao;
 
+import java.util.List;
+
 import org.hitplay.generic.dao.BaseDao;
 import org.hitplay.audio.dto.Tag;
 
@@ -26,5 +28,12 @@ public class TagDao extends BaseDao<Tag>{
 	public void delete(Tag type) {
 		sess().delete(type);
 	}
-
+	
+	public List<Tag> getTagsByName(String name){
+		return sess().createQuery("from Tag where name LIKE :q").setParameter("q",'%'+name+'%').list();
+	}
+	
+	public Tag getTagByName(String name){
+		return  (Tag) sess().createQuery("from Tag where name = :q").setParameter("q",'%'+name+'%').uniqueResult();
+	}
 }

@@ -22,10 +22,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<s:fielderror />
 	<s:form action="doUploadAudio" namespace="/" method="POST"
 		enctype="multipart/form-data">
-
 		<table>
 			<tr>
 				<td>Title</td>
@@ -38,7 +37,7 @@
 			<tr>
 				<td>Genre</td>
 				<td><select name="genreId">
-						<s:iterator value="genres" var ="genre">
+						<s:iterator value="genres" var="genre">
 
 							<option value="<s:property value = "#genre.id"/>">
 								<s:property value="#genre.name" />
@@ -48,12 +47,36 @@
 				</select></td>
 			</tr>
 			<tr>
-				<td><s:file name="file" id="fileup" value="kyel" label="File" />
+				<td>Tags:</td>
+				
+				<td>
+				 <ul id="singleFieldTags"></ul>
+				<s:hidden   name = "tags" id="tags"  /></td>
+			</tr>
+			<tr>
+				<td><s:file name="file" />
 					<s:fielderror /></td>
 				<td><s:submit id="upload-file" /></td>
 			</tr>
 		</table>
-
+		<script>
+		    $("#singleFieldTags").tagit({
+		    	singleField: true,
+		    	singleFieldNode: $('#tags'),
+		        allowSpaces: true,
+		        minLength: 2,
+		        tagSource: function (search, showChoices) {
+		            $.ajax({
+		                url: "/HitPlay/tags?q=" + search.term,
+		                dataType: "json",
+		                success: function (choices) {
+		                    tgs = $.parseJSON(choices.tag);
+		                    showChoices(tgs);
+		                }
+		            });
+		        }
+		    });
+		</script>
 	</s:form>
 
 </body>

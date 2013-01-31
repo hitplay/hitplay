@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.json.JSONUtil;
 import org.apache.struts2.util.ServletContextAware;
 import org.hitplay.audio.dto.Audio;
@@ -28,13 +30,17 @@ import org.hitplay.services.ProfileService;
 import org.hitplay.services.UploadPictureService;
 import org.hitplay.user.dto.UserProfile;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 public class UploadTrackAction extends UserAction implements
-		ServletRequestAware {
+		ServletRequestAware  {
 
 	public String execute() {
 		
+	System.out.println("TAGS"+this.tags);
+		
 		String username = (String) session.get(Handles.USERNAME_HANDLE);
-		Long userId = (Long)session.get(Handles.UID_HANDLE);
+		Long userId = (Long) session.get(Handles.UID_HANDLE);
 		UserProfile profile = this.profileService.getProfile(userId);
 		String root = request.getServletContext().getRealPath("/");
 
@@ -44,10 +50,10 @@ public class UploadTrackAction extends UserAction implements
 		 */
 		String dirToStore = root + Paths.MEDIA + username + Paths.AUDIO;
 
-		/* We will name the uploaded audio file on the date and time it was
-		* uploaded
-		* For Uniqueness of the user upload
-		*/
+		/*
+		 * We will name the uploaded audio file on the date and time it was
+		 * uploaded For Uniqueness of the user upload
+		 */
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 		Calendar cal = Calendar.getInstance();
 		String audioFileName = dateFormat.format(cal.getTime());
@@ -70,23 +76,44 @@ public class UploadTrackAction extends UserAction implements
 				+ Paths.MEDIA + username + Paths.AUDIO + audioFileName + ".mp3";
 		String relOggPath = request.getServletContext().getContextPath()
 				+ Paths.MEDIA + username + Paths.AUDIO + audioFileName + ".ogg";
-		
-		
+
 		// Some Service Layers
 		audioBean.setMp3Path(relMp3Path);
 		audioBean.setOggPath(relOggPath);
 		audioBean.setDateUploaded(new Date());
 		audioBean.setGenre(audioTaggingService.getGenre(genreId));
 		audioService.uploadAudio(profile, audioBean);
-		
+
 		
 		
 		return "success";
 	}
 
-	public String populateBeans(){
+	@SkipValidation
+	public String populateBeans() {
 		this.setGenres(audioTaggingService.getAllGenres());
 		return "success";
+	}
+	
+	public void validate(){
+		setGenres(audioTaggingService.getAllGenres());
+		if(file == null){
+			this.addFieldError("file","You Need to Upload an audio file");
+		}
+		
+		//Check if the tag exist
+		for(String tagName: undelimitTags()){
+			if(!audioTaggingService.tagExist(tagName)){
+				addFieldError("tag",tagName+" does not Exist. You cant create your own tag.");
+			}
+		}
+		
+		
+	}
+	
+	private List<String> undelimitTags(){
+		String[] tag = tags.split(",");
+		return Arrays.asList(tag);
 	}
 	
 	public File getFile() {
@@ -101,7 +128,7 @@ public class UploadTrackAction extends UserAction implements
 			UploadPictureService uploadPictureService) {
 		this.uploadPictureService = uploadPictureService;
 	}
-	
+
 	public void setProfileService(ProfileService profileService) {
 		this.profileService = profileService;
 	}
@@ -109,7 +136,7 @@ public class UploadTrackAction extends UserAction implements
 	public void setAudioBean(Audio audioBean) {
 		this.audioBean = audioBean;
 	}
-	
+
 	public void setAudioService(AudioServices audioService) {
 		this.audioService = audioService;
 	}
@@ -118,11 +145,11 @@ public class UploadTrackAction extends UserAction implements
 	public void setServletRequest(HttpServletRequest arg0) {
 		request = arg0;
 	}
-	
+
 	public Audio getAudioBean() {
 		return audioBean;
 	}
-	
+
 	public AudioTaggingService getAudioTaggingService() {
 		return audioTaggingService;
 	}
@@ -139,13 +166,22 @@ public class UploadTrackAction extends UserAction implements
 		this.genres = genres;
 	}
 
-	
 	public Long getGenreId() {
 		return genreId;
 	}
 
 	public void setGenreId(Long genreId) {
 		this.genreId = genreId;
+	}
+
+	
+	
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
 	private File file;
@@ -157,5 +193,5 @@ public class UploadTrackAction extends UserAction implements
 	private List<Genre> genres;
 	private AudioTaggingService audioTaggingService;
 	private HttpServletRequest request;
-
+	private String tags;
 }
