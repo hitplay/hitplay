@@ -2,7 +2,7 @@ package org.hitplay.user.actions;
 
 import java.util.List;
 
-import org.hitplay.password.util.PaginationHelper;
+import org.hitplay.misc.PaginationHelper;
 import org.hitplay.services.ProfileService;
 import org.hitplay.user.dto.UserProfile;
 

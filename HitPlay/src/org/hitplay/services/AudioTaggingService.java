@@ -1,5 +1,6 @@
 package org.hitplay.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hitplay.audio.dao.GenreDao;
@@ -51,9 +52,26 @@ public class AudioTaggingService {
 	}
 	
 	//Checks if the Tag Exist, null  is  does not exist.
-	public boolean tagExist(String name){
+	public boolean isAvailable(String name){
 		Tag tg = getTagByName(name);
-		return (tg != null) ? true : false;
+		if(tg != null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	//Fetch the List of tags from the db using the given tagNames
+	public List<Tag> evalTags(List<String> tagNames){
+		List<Tag> tags = new ArrayList<Tag>();
+		
+		for(String names: tagNames){
+			Tag tg = tagDao.getTagByName(names);
+			System.out.println(tg.getName());
+			tags.add(tg);
+		}
+		
+		return tags;
 	}
 	
 	private TagDao tagDao;

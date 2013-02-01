@@ -34,6 +34,6 @@ public class TagDao extends BaseDao<Tag>{
 	}
 	
 	public Tag getTagByName(String name){
-		return  (Tag) sess().createQuery("from Tag where name = :q").setParameter("q",'%'+name+'%').uniqueResult();
+		return  (Tag) sess().createQuery("from Tag where name = :q").setParameter("q",name).uniqueResult();
 	}
 }

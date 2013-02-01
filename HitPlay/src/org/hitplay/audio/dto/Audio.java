@@ -1,12 +1,18 @@
 package org.hitplay.audio.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -96,6 +102,19 @@ public class Audio implements Serializable {
 	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
+	
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void addTag(Tag tag){
+		tags.add(tag);
+		System.out.println("Tag Added To Audio: "+tag.getName());
+	}
 
 	@Id
 	@GeneratedValue
@@ -124,13 +143,17 @@ public class Audio implements Serializable {
 	@JoinColumn(name = "AUDIO_ART_FK")
 	private Picture coverArt;
 
-	// TODO
 	@OneToOne
 	@JoinColumn(name = "GENRE_FK")
 	private Genre genre;
 
-	// TODO
-	// private Set<Tags> tags;
+	@ManyToMany
+	@JoinTable(
+		name = "AUDIO_X_TAGS",
+		joinColumns = {@JoinColumn(name = "TRACK_ID")},
+		inverseJoinColumns={@JoinColumn(name="TAG_ID")}
+	)
+	private List<Tag> tags = new ArrayList<Tag>();
 
 	// TODO
 	// private List<Comment> comments;

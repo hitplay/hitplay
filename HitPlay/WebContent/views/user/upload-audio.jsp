@@ -54,8 +54,7 @@
 				<s:hidden   name = "tags" id="tags"  /></td>
 			</tr>
 			<tr>
-				<td><s:file name="file" />
-					<s:fielderror /></td>
+				<td><s:file name="file" /></td>
 				<td><s:submit id="upload-file" /></td>
 			</tr>
 		</table>

@@ -18,6 +18,7 @@ import org.apache.struts2.json.JSONUtil;
 import org.apache.struts2.util.ServletContextAware;
 import org.hitplay.audio.dto.Audio;
 import org.hitplay.audio.dto.Genre;
+import org.hitplay.audio.dto.Tag;
 import org.hitplay.audio.utils.AudioFileFormatConverter;
 import org.hitplay.audio.utils.CODEC;
 import org.hitplay.audio.utils.FORMAT;
@@ -76,13 +77,18 @@ public class UploadTrackAction extends UserAction implements
 				+ Paths.MEDIA + username + Paths.AUDIO + audioFileName + ".mp3";
 		String relOggPath = request.getServletContext().getContextPath()
 				+ Paths.MEDIA + username + Paths.AUDIO + audioFileName + ".ogg";
-
-		// Some Service Layers
+		
+		
+		
+		// Populate the Neccesarry DTOS
+		List<Tag> audioTags = audioTaggingService.evalTags(undelimitTags());
 		audioBean.setMp3Path(relMp3Path);
 		audioBean.setOggPath(relOggPath);
 		audioBean.setDateUploaded(new Date());
 		audioBean.setGenre(audioTaggingService.getGenre(genreId));
-		audioService.uploadAudio(profile, audioBean);
+		
+		//Call the Service Layer To upload the audio
+		audioService.uploadAudio(profile, audioBean,audioTags);
 
 		
 		
@@ -95,16 +101,22 @@ public class UploadTrackAction extends UserAction implements
 		return "success";
 	}
 	
-	public void validate(){
+	public void validate() {
 		setGenres(audioTaggingService.getAllGenres());
-		if(file == null){
-			this.addFieldError("file","You Need to Upload an audio file");
+		if (file == null) {
+			this.addFieldError("file", "You Need to Upload an audio file");
+			System.out.println("You Need to Upload an audio file");
 		}
-		
-		//Check if the tag exist
-		for(String tagName: undelimitTags()){
-			if(!audioTaggingService.tagExist(tagName)){
-				addFieldError("tag",tagName+" does not Exist. You cant create your own tag.");
+
+		// Check if the tag exist
+		if (this.tags == null || tags.equals("")) {
+			System.out.println("Please Enter A Tag(Minimum of 1 max of 5");
+		} else {
+			for (String tagName : undelimitTags()) {
+				if (!audioTaggingService.isAvailable(tagName)) {
+					addFieldError("tag", tagName+ " does not Exist. You cant create your own tag.");
+					System.out.println(tagName+ " does not Exist. You cant create your own tag.");
+				}
 			}
 		}
 		
