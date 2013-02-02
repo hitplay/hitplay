@@ -4,6 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
+
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script
@@ -13,10 +15,10 @@
 	src="${pageContext.request.contextPath}/javascripts/tagit/tag-it.js"></script>
 
 <link
-	href="${pageContext.request.contextPath}/stylesheets/tagit/jquery.tagit.css"
+	href="${pageContext.request.contextPath}/css/tagit/jquery.tagit.css"
 	rel="stylesheet" type="text/css">
 <link
-	href="${pageContext.request.contextPath}/stylesheets/tagit/tagit.ui-zendesk.css"
+	href="${pageContext.request.contextPath}/css/tagit/tagit.ui-zendesk.css"
 	rel="stylesheet" type="text/css">
 
 <title>Insert title here</title>
@@ -50,8 +52,7 @@
 				<td>Tags:</td>
 				
 				<td>
-				 <ul id="singleFieldTags"></ul>
-				<s:hidden   name = "tags" id="tags"  /></td>
+				<s:textfield   name = "tags" id="tags"  /></td>
 			</tr>
 			<tr>
 				<td><s:file name="file" /></td>
@@ -59,11 +60,7 @@
 			</tr>
 		</table>
 		<script>
-		    $("#singleFieldTags").tagit({
-		    	singleField: true,
-		    	singleFieldNode: $('#tags'),
-		        allowSpaces: true,
-		        minLength: 2,
+		    $("#tags").tagit({
 		        tagSource: function (search, showChoices) {
 		            $.ajax({
 		                url: "/HitPlay/tags?q=" + search.term,
