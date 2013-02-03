@@ -1,37 +1,12 @@
+<!DOCTYPE html>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-<!--  Style Sheets -->
-
-<link href="${contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${contextPath}/css/sticky_footer.css" rel="stylesheet">
-<link href="${contextPath}/css/carousel.css" rel="stylesheet">
-<link href="${contextPath}/css/mycustom.css" rel="stylesheet">
-<link href="${contextPath}/css/web-serveroff-fontfacekit/stylesheet.css" rel="stylesheet">
-<link href="${contextPath}/css/open-sans-fontfacekit/stylesheet.css" rel="stylesheet">
-
-
-<!--  The Grand Daddy of them all -->
-<script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-
-<!--  Other Necessary Scripts and CSS -->
-<script src="${contextPath}/javascripts/mediaelement/mediaelement-and-player.min.js"></script>
-<link rel="stylesheet" href="${contextPath}/javascripts/mediaelement/c_mediaelementplayer.css" />
-
-
-<!-- Ajax Stuff -->
-<script src="${contextPath}/javascripts/jquery-bbq.js"></script>
-<script	src="${contextPath}/javascripts/ajaxified.js"></script>
-<script src="${contextPath}/javascripts/holder/holders.js"></script>
-
-<link href="${contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<jsp:include page="inits/initHead.jsp" />
 <script>
 $(document).ready(function() {
 	$('a').each(function(index,value){
@@ -39,25 +14,28 @@ $(document).ready(function() {
 		  var hash  = "#";
 		  $(this).attr("href",hash+page);
 	});
-
-		$('#modal-body-sign-in').on('submit', '#sign-in', function(e) {
+	
+	$('#submit-login').on('click',function(e){
+			$('#hidden-submit-login').click();
+	})
+	
+		$('body').on('submit', '#sign-in', function(e) {
 			e.preventDefault();
+					
 			var data = $(this).serialize();
+
 			var url = $(this).attr('action');
 			$.ajax({
 				//this is the php file that processes the data and send mail
 				url : url,
 				type : "POST",
 				data : data,
-				dataType: "html",
 				//Do not cache the page
 				cache : false,
 				//success
 				success : function(data) {
-					//console.log(data.content);
-					
 					console.log($(data));
-				//$('#modal-body-sign-in').html($(html).find('#modal-body').html());
+					$('#loginModal').html($(data).find('#loginModal').html());
 				}
 			});
 		})
@@ -169,6 +147,7 @@ $(document).ready(function() {
 
 
     <!--Hidden Signup Modal-->
+    
     <div id="signupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -214,10 +193,11 @@ $(document).ready(function() {
 		      </div>
      </form>
     </div><!--end signup modal-->
-
+	
 
 
      <!--Hidden Login Modal-->
+     <div id = "loginModalContainer">
     <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -238,14 +218,15 @@ $(document).ready(function() {
                       <span class="form_hint">Minimum of 9 characters</span>
                   </li>
               </ul>
+             <button type = "submit" id = "hidden-submit-login" hidden = "true">kk</button>
+            </form>
       </div>
 
 	      <div class="modal-footer">
 	        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-	        <button class="submit" type="submit">Login</button>
+	        <button class="submit" id = "submit-login"type="submit">Login</button>
 	      </div>
-       </form>
-       
+    </div>
     </div>
 
     <div class="container">
@@ -308,21 +289,6 @@ $(document).ready(function() {
     </div>
 
     </div> <!-- /container -->
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-transition.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-alert.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-modal.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-dropdown.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-scrollspy.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-tab.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-tooltip.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-popover.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-button.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-collapse.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-carousel.js"></script>
-    <script src="${contextPath}/javascripts/bootstrap/bootstrap-typeahead.js"></script>
-
+	<jsp:include page="inits/initBot.jsp" />
   </body>
 </html>

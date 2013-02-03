@@ -22,7 +22,6 @@ public class LoginAction extends UserAction implements SessionAware{
 
 	public void validate() {
 		User userValid = authenticateLoginService.isValid(userBean);
-		
 		if (userValid == null) {
 			addActionError("Incorrect username or password");
 		}else{
