@@ -9,6 +9,7 @@
 <jsp:include page="inits/initHead.jsp" />
 <script>
 $(document).ready(function() {
+	"user strict"
 	$('a').each(function(index,value){
 		  var page = $(this).attr("href");
 		  var hash  = "#";
@@ -19,35 +20,60 @@ $(document).ready(function() {
 			$('#hidden-submit-login').click();
 	})
 	
-		$('body').on('submit', '#sign-in', function(e) {
+		$('body').on('submit','#sign-in', function(e) {
 			e.preventDefault();
 					
 			var data = $(this).serialize();
 
 			var url = $(this).attr('action');
 			$.ajax({
-				//this is the php file that processes the data and send mail
 				url : url,
 				type : "POST",
 				data : data,
+				
 				//Do not cache the page
 				cache : false,
 				//success
-				success : function(data) {
-					console.log($(data));
-					$('#loginModal').html($(data).find('#loginModal').html());
+				dataType: "html",
+				success : function(response,status) {
+					
+					//Results for successful login page
+					
+					//If the user has valid credentials, it will return a dashboard html page.
+					if(!(typeof $(response).find('#dashboard').html() === 'undefined')){
+						$('#loginModal').modal("hide");
+						$('#wrap').html('');
+						$('#wrap').html( $(response).find('#dashboard').html() );
+					}else{
+						//If the user Entered Invalid Credntials, it will just return the 
+						//loginModal Page response from the server
+						$('#sign-in').html($(response).find('#sign-in').html());
+					}
+					
+					/*
+					//If the User is Successfully logged it, it will reutnr the dashboard page
+					 var dashboard= $(response).filter('#dashboard');				 
+					 //This Will Return the LoginModal If The user has invalid credentials
+					 var loginModal = $(response).find('#loginModal').html();
+					 $('#loginModal').html(loginModal);
+					 
+					 if(dashboard.length != 0){
+						 alert("XD");
+					 }else{
+						 alert("FAIL TO LOGIN");
+					 }
+					 */
 				}
 			});
-		})
-   
-
+		});
 });
 
 </script>
 <style type="text/css">
+      
       body {
-        padding-top: 40px;
-        padding-bottom: 40px;
+       	paddding-top:40px;
+       	padding-bottom:40px;
       }
     
     </style>
@@ -65,7 +91,6 @@ $(document).ready(function() {
   </head>
 
   <body>
-
   <div id="wrap">
 
 
@@ -158,12 +183,12 @@ $(document).ready(function() {
           <form class="contact_form" action="doLogin" method="post" name="contact_form">
               <ul>
                   <li>
-                      <span class="required_notification">* Invalid user name or password</span>
+                    
                   </li>
                   <li>
                       <label for="name">* Username:</label>
                       <input type="text"  placeholder="User123" required />
-                      <span class="form_hint">No spaces and special characters allowed</span>
+                      <span class="form_hint">sNo spaces and special characters allowed</span>
                   </li>
                   <li>
                       <label for="email">* Email:</label>
@@ -197,7 +222,7 @@ $(document).ready(function() {
 
 
      <!--Hidden Login Modal-->
-     <div id = "loginModalContainer">
+     
     <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -227,18 +252,28 @@ $(document).ready(function() {
 	        <button class="submit" id = "submit-login"type="submit">Login</button>
 	      </div>
     </div>
-    </div>
+
 
     <div class="container">
 
       <!-- row of columns -->
-
           <ul class="thumbnails">
             <li class="span4">
               <div class="thumbnail">
                 <img data-src="holder.js/300x200" alt="">
                 <h2>Latest Artist</h2>
-                <h5><a href="#">Artist Name</a></h5>
+                <h5><a href="#">Learn</a></h5>
+                <div class="media-body">
+                  <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+                </div>
+              </div>
+            </li>
+            
+            <li class="span4">
+              <div class="thumbnail">
+                <img data-src="holder.js/300x200" alt="">
+                <h2>Share</h2>
+                <h5><a href="#">Share Your Music Creation</a></h5>
                 <div class="media-body">
                   <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
                 </div>
@@ -248,19 +283,7 @@ $(document).ready(function() {
             <li class="span4">
               <div class="thumbnail">
                 <img data-src="holder.js/300x200" alt="">
-                <h2>Popular Song</h2>
-                <h5><a href="#">Song Title by Artist Name</a></h5>
-                <div class="media-body">
-                  <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-                </div>
-              </div>
-            </li>
-
-            <li class="span4">
-              <div class="thumbnail">
-                <img data-src="holder.js/300x200" alt="">
-                <h2>Latest Upload</h2>
-                <h5><a href="#">Song Title by Artist Name</a></h5>
+                <h2>Discover</h2>Promote Your Creations</a></h5>
                 <div class="media-body">
                   <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
                 </div>
@@ -268,8 +291,8 @@ $(document).ready(function() {
             </li>
           </ul>
       <hr>
-  </div><!--wrap end-->
-
+  	</div><!--wrap end-->
+</div> <!-- /container -->
 <!--footer-->
       <div class="navbar navbar-inverse navbar-fixed-bottom">
 
@@ -277,18 +300,17 @@ $(document).ready(function() {
           <div class="container">
 
             <div align="center">
-              <audio id="player2" src="media/Banana_boat_song.mp3" type="audio/mp3" controls="controls"></audio>  
+              <audio id="player2" src="music.mp3" type="audio/mp3" controls="controls"></audio>  
 
               <script>
-                $('audio,video').mediaelementplayer({audioWidth: 960, audioHeight: 30, features: ['playpause','progress','current','duration','tracks','volume','fullscreen']});
+                $('audio').mediaelementplayer({audioWidth: 960, audioHeight: 30, features: ['playpause','progress','current','duration','tracks','volume','fullscreen']});
               </script>
-
           </div>
         </div>
       </div>
     </div>
 
-    </div> <!-- /container -->
+    
 	<jsp:include page="inits/initBot.jsp" />
   </body>
 </html>

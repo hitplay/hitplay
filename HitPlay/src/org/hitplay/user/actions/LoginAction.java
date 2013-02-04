@@ -26,8 +26,8 @@ public class LoginAction extends UserAction implements SessionAware{
 			addActionError("Incorrect username or password");
 		}else{
 			session.put(Handles.USERNAME_HANDLE,userValid.getUsername());
-			System.out.println((String)session.get(Handles.USERNAME_HANDLE));
 			session.put(Handles.UID_HANDLE,userValid.getUserId());	
+			session.put(Handles.USER_HANDLE,Handles.USER_HANDLE);	
 		}	
 	
 	}

@@ -7,7 +7,6 @@
 </head>
 <body>
 	<!--  Ajax Container. DO NOT REMOVE THE DIV CONTENT  FOR AJAX ACCESS! -->
-	 <div id = "loginModalContainer">
     <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -17,7 +16,8 @@
       <div class="modal-body" id = "modal-body-sign-in"><!--Modal Body === Form -->
       		<s:actionerror/>
           <form class="contact_form" id = "sign-in" action="doLogin" method="post" name="contact_form">
-              <ul>                  
+              <ul>    
+              		<span class="required_notification"><s:actionerror/> </span>           
                   <li>
                       <label for="email">Username:</label>
                       <input ="textfield" name="userBean.username" placeholder="user123@example.com" required />
@@ -42,6 +42,6 @@
 				$('#hidden-submit-login').click();
 		})</script>
     </div>
-    </div>
+ 
 </body>
 </html>

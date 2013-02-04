@@ -9,12 +9,18 @@
 
 	<!-- NOTE: Use json-default for form validation packages -->
 	<package name="default" namespace="/" extends="json-default">
+		<interceptors>
+			<interceptor name="userAuthorization"
+				class="org.hitplay.custom.interceptors.UserAuthorization" />
+		</interceptors>
 		<default-action-ref name="home" />
-
+		
 		<!-- Initial Action Page (Action For Index/Welcome Page) -->
 		<action name="home" class="org.hitplay.base.actions.IndexAction"
 			method="execute">
+			<!-- <interceptor-ref name="userAuthorization" /> -->
 			<result name="success">/views/index.jsp</result>
+			<result name="logged-in">/views/dashboard.jsp</result>
 		</action>
 
 		<!-- Test Action to see if Actions is Working -->
@@ -47,7 +53,7 @@
 			method="execute">
 			<!-- Change this later to a Login registration Page -->
 			<interceptor-ref name="jsonValidationWorkflowStack" />
-			<result name="success">/views/user/welcome.jsp</result>
+			<result name="success" type = "redirect">/views/user/welcome.jsp</result>
 			<result name="input">/views/forms/login.jsp</result>
 		</action>
 
